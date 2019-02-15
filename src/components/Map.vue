@@ -4,6 +4,7 @@
 
 <script>
 /* eslint-disable */
+import { mapMutations } from 'vuex'
 import GoogleMapsApiLoader from 'google-maps-api-loader'
 
 export default {
@@ -26,6 +27,7 @@ export default {
     };
   },
   methods: {
+    ... mapMutations(['toggleModal']),
     initializeMap(){
       const { Map } = this.google.maps;
       this.myMap = new this.google.maps.Map(this.$refs.map, this.mapConfig);
@@ -64,6 +66,7 @@ export default {
         lng: e.latLng.lng()
       }
       this.createMarker()
+      this.toggleModal()
     })
 
   }

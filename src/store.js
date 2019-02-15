@@ -7,8 +7,16 @@ export default new Vuex.Store({
   state: {
     search: "",
     places: [],
-    filteredPlaces: []
+    filteredPlaces: [],
+    showModal: false
   },
-  mutations: {},
+  getters: {
+    modalState: state => state.showModal
+  },
+  mutations: {
+    toggleModal(state) {
+      state.showModal = !state.showModal;
+    }
+  },
   actions: {}
 });

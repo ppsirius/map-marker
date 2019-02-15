@@ -1,16 +1,19 @@
 <template>
   <div id="app">
     <Map />
+    <Modal />
   </div>
 </template>
 
 <script>
 import Map from "./components/Map.vue";
+import Modal from "./components/Modal.vue";
 
 export default {
   name: "app",
   components: {
-    Map
+    Map,
+    Modal
   }
 };
 </script>
