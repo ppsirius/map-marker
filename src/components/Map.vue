@@ -16,11 +16,13 @@ export default {
       places: [],
       mapConfig: {
         zoom: 11,
+        position: { lat: 52.227, lng: 21.016 },
         center: { lat: 52.227, lng: 21.016 }
       },
       apiKey: process.env.VUE_APP_GOOGLE_MAPS_KEY,
       myCoordinate: { lat: 52.222, lng: 21.012 },
-      marker: null
+      marker: null,
+      clickedCoordinates: {}
     };
   },
   methods: {
@@ -34,6 +36,10 @@ export default {
         title: 'Click to zoom'
       });
     },
+
+    moveToMarker(marker) {
+      this.myMap.panTo(marker.getPosition());
+    }
   },
   async mounted() {
     const google = await GoogleMapsApiLoader({
@@ -43,17 +49,18 @@ export default {
       this.initializeMap();
     });
 
-    this.myMap.addListener('click', (e) => {
-      console.log(e)
-    });
-
-    this.google.maps.event.addListener(this.myMap, 'click', (e) => {
+    this.myMap.addListener('click', function(e) {
       console.log(e.latLng)
     });
 
-    window.setTimeout(() => {
-      this.myMap.panTo(this.marker.getPosition());
-    }, 3000);
+
+    this.google.maps.event.addListener(this.myMap, 'click', function(e) {
+      this.clickedCoordinates = {
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng()
+      }
+    })
+
   }
 };
 </script>
