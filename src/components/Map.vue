@@ -11,41 +11,49 @@ export default {
   data: () => {
     return {
       google: null,
+      myMap: null,
       markers: [],
       places: [],
       mapConfig: {
-        zoom: 12,
+        zoom: 11,
         center: { lat: 52.227, lng: 21.016 }
       },
-      apiKey: process.env.VUE_APP_GOOGLE_MAPS_KEY
+      apiKey: process.env.VUE_APP_GOOGLE_MAPS_KEY,
+      myCoordinate: { lat: 52.222, lng: 21.012 },
+      marker: null
     };
   },
   methods: {
-    addMarker() {
-      const marker = {
-        lat: 52.227,
-        lng: 21.015
-      };
-      this.markers.push(marker);
-    },
-    logEvent(e) {
-      console.log(google.maps);
-    },
     initializeMap(){
       const { Map } = this.google.maps;
-      this.map = new Map(this.$refs.map, this.mapConfig);
-    }
-  },
-  created() {
+      this.myMap = new this.google.maps.Map(this.$refs.map, this.mapConfig);
 
+      this.marker = new this.google.maps.Marker({
+        position: this.myCoordinate,
+        map: this.myMap,
+        title: 'Click to zoom'
+      });
+    },
   },
-  mounted() {
-    GoogleMapsApiLoader({
+  async mounted() {
+    const google = await GoogleMapsApiLoader({
       apiKey: this.apiKey
     }).then(google => {
       this.google = google
       this.initializeMap();
     });
+
+    this.myMap.addListener('click', (e) => {
+      console.log(e)
+    });
+
+    this.google.maps.event.addListener(this.myMap, 'click', (e) => {
+      console.log(e.latLng)
+    });
+
+    window.setTimeout(() => {
+      this.myMap.panTo(this.marker.getPosition());
+    }, 3000);
   }
 };
 </script>
