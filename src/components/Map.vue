@@ -37,6 +37,14 @@ export default {
       });
     },
 
+    createMarker() {
+      new this.google.maps.Marker({
+        position: this.clickedCoordinates,
+        map: this.myMap,
+        title: 'Click to zoom'
+      })
+    },
+
     moveToMarker(marker) {
       this.myMap.panTo(marker.getPosition());
     }
@@ -49,16 +57,13 @@ export default {
       this.initializeMap();
     });
 
-    this.myMap.addListener('click', function(e) {
-      console.log(e.latLng)
-    });
 
-
-    this.google.maps.event.addListener(this.myMap, 'click', function(e) {
+    this.google.maps.event.addListener(this.myMap, 'click', (e) => {
       this.clickedCoordinates = {
         lat: e.latLng.lat(),
         lng: e.latLng.lng()
       }
+      this.createMarker()
     })
 
   }
