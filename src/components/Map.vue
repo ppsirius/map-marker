@@ -6,14 +6,15 @@
 /* eslint-disable */
 import { mapMutations, mapGetters } from "vuex";
 import GoogleMapsApiLoader from "google-maps-api-loader";
-
+import { snazzyMaps } from "../utils/snazzyMaps";
 export default {
   name: "Map",
   data: () => {
     return {
       mapConfig: {
         zoom: 11,
-        center: { lat: 52.227, lng: 21.016 }
+        center: { lat: 52.227, lng: 21.016 },
+        styles: snazzyMaps
       },
       apiKey: process.env.VUE_APP_GOOGLE_MAPS_KEY,
       google: null,
