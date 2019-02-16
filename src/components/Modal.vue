@@ -5,19 +5,19 @@
         <div class="modal-container">
           <div class="modal-header">
             <slot name="header">
-              default header
+              <h3>Saving new places in Warsaw</h3>
             </slot>
           </div>
           <div class="modal-body">
             <slot name="body">
-              default body
+              <form>
+                <input v-model="placeName" required placeholder="Place name">
+              </form>
             </slot>
           </div>
           <div class="modal-footer">
             <slot name="footer">
-              <button class="modal-default-button" @click="toggleModal">
-                OK
-              </button>
+              <button class="modal-default-button" @click="savePlace">Save place</button>
             </slot>
           </div>
         </div>
@@ -27,34 +27,44 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "Modal",
   data: () => {
     return {
-      showModal: false
+      placeName: ""
     };
   },
   computed: {
     ...mapGetters(["modalState"])
   },
   methods: {
-    ...mapMutations(["toggleModal"])
+    ...mapMutations(["toggleModal", "addPlace"]),
+    clearPlaceName() {
+      this.placeName = "";
+    },
+    savePlace() {
+      this.addPlace(this.placeName);
+      this.toggleModal();
+      this.clearPlaceName();
+    }
   }
-}
+};
 </script>
 
 <style>
 .modal-mask {
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .5);
-  transition: opacity .3s ease;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease;
 }
-
 
 .modal-container {
   width: 300px;
@@ -62,8 +72,8 @@ export default {
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-  transition: all .3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
 }
 

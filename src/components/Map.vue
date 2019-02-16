@@ -4,71 +4,66 @@
 
 <script>
 /* eslint-disable */
-import { mapMutations } from 'vuex'
-import GoogleMapsApiLoader from 'google-maps-api-loader'
+import { mapMutations, mapGetters } from "vuex";
+import GoogleMapsApiLoader from "google-maps-api-loader";
 
 export default {
   name: "Map",
   data: () => {
     return {
-      google: null,
-      myMap: null,
-      markers: [],
-      places: [],
       mapConfig: {
         zoom: 11,
-        position: { lat: 52.227, lng: 21.016 },
         center: { lat: 52.227, lng: 21.016 }
       },
       apiKey: process.env.VUE_APP_GOOGLE_MAPS_KEY,
-      myCoordinate: { lat: 52.222, lng: 21.012 },
-      marker: null,
-      clickedCoordinates: {}
+      google: null,
+      myMap: null
     };
   },
+  computed: {
+    ...mapGetters(["places"])
+  },
   methods: {
-    ... mapMutations(['toggleModal']),
-    initializeMap(){
+    ...mapMutations(["toggleModal", "addPlace", "setCoordinates"]),
+    initializeMap() {
       const { Map } = this.google.maps;
       this.myMap = new this.google.maps.Map(this.$refs.map, this.mapConfig);
-
-      this.marker = new this.google.maps.Marker({
-        position: this.myCoordinate,
-        map: this.myMap,
-        title: 'Click to zoom'
-      });
-    },
-
-    createMarker() {
-      new this.google.maps.Marker({
-        position: this.clickedCoordinates,
-        map: this.myMap,
-        title: 'Click to zoom'
-      })
     },
 
     moveToMarker(marker) {
       this.myMap.panTo(marker.getPosition());
+    },
+
+    updateMarkers() {
+      this.places.forEach(place => {
+        new this.google.maps.Marker({
+          position: place.position,
+          map: this.myMap,
+          title: place.title
+        });
+      });
+    }
+  },
+  watch: {
+    places() {
+      this.updateMarkers();
     }
   },
   async mounted() {
     const google = await GoogleMapsApiLoader({
       apiKey: this.apiKey
     }).then(google => {
-      this.google = google
+      this.google = google;
       this.initializeMap();
     });
 
-
-    this.google.maps.event.addListener(this.myMap, 'click', (e) => {
-      this.clickedCoordinates = {
+    this.google.maps.event.addListener(this.myMap, "click", e => {
+      this.setCoordinates({
         lat: e.latLng.lat(),
         lng: e.latLng.lng()
-      }
-      this.createMarker()
-      this.toggleModal()
-    })
-
+      });
+      this.toggleModal();
+    });
   }
 };
 </script>

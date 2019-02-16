@@ -8,14 +8,25 @@ export default new Vuex.Store({
     search: "",
     places: [],
     filteredPlaces: [],
-    showModal: false
+    showModal: false,
+    clickedCoordinates: {}
   },
   getters: {
-    modalState: state => state.showModal
+    modalState: state => state.showModal,
+    places: state => state.places
   },
   mutations: {
     toggleModal(state) {
       state.showModal = !state.showModal;
+    },
+    addPlace(state, payload) {
+      state.places.push({
+        position: state.clickedCoordinates,
+        title: payload
+      });
+    },
+    setCoordinates(state, payload) {
+      state.clickedCoordinates = { ...payload };
     }
   },
   actions: {}
