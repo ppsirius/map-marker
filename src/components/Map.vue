@@ -24,7 +24,13 @@ export default {
     ...mapGetters(["places"])
   },
   methods: {
-    ...mapMutations(["toggleModal", "addPlace", "setCoordinates"]),
+    ...mapMutations([
+      "toggleModal",
+      "addPlace",
+      "setCoordinates",
+      "setPlaceName",
+      "setEditableModalMode"
+    ]),
     initializeMap() {
       const { Map } = this.google.maps;
       this.myMap = new this.google.maps.Map(this.$refs.map, this.mapConfig);
@@ -36,10 +42,16 @@ export default {
 
     updateMarkers() {
       this.places.forEach(place => {
-        new this.google.maps.Marker({
+        const marker = new this.google.maps.Marker({
           position: place.position,
           map: this.myMap,
           title: place.title
+        });
+        marker.addListener("click", e => {
+          this.moveToMarker(marker);
+          this.setPlaceName(marker.title);
+          this.toggleModal();
+          this.setEditableModalMode(false);
         });
       });
     }

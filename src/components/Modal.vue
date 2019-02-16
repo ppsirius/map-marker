@@ -5,19 +5,29 @@
         <div class="modal-container">
           <div class="modal-header">
             <slot name="header">
-              <h3>Saving new places in Warsaw</h3>
+              <h3>Place in Warsaw</h3>
             </slot>
           </div>
           <div class="modal-body">
             <slot name="body">
               <form>
-                <input v-model="placeName" required placeholder="Place name">
+                <input
+                  required
+                  placeholder="Place name"
+                  :value="placeName"
+                  @input="updatePlaceName"
+                >
               </form>
             </slot>
           </div>
           <div class="modal-footer">
             <slot name="footer">
-              <button class="modal-default-button" @click="savePlace">Save place</button>
+              <div v-if="modalMode">
+                <button class="modal-default-button" @click="savePlace">Save place</button>
+              </div>
+              <div v-else>
+                <button class="modal-default-button" @click="closeModal">Ok</button>
+              </div>
             </slot>
           </div>
         </div>
@@ -30,23 +40,22 @@
 import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "Modal",
-  data: () => {
-    return {
-      placeName: ""
-    };
-  },
   computed: {
-    ...mapGetters(["modalState"])
+    ...mapGetters(["modalState", "modalMode", "placeName"])
   },
   methods: {
-    ...mapMutations(["toggleModal", "addPlace"]),
-    clearPlaceName() {
-      this.placeName = "";
-    },
+    ...mapMutations(["toggleModal", "addPlace", "setPlaceName"]),
     savePlace() {
       this.addPlace(this.placeName);
       this.toggleModal();
-      this.clearPlaceName();
+      this.setPlaceName("");
+    },
+    updatePlaceName(e) {
+      this.setPlaceName(e.target.value);
+    },
+    closeModal() {
+      this.toggleModal();
+      this.setPlaceName("");
     }
   }
 };

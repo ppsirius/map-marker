@@ -9,14 +9,19 @@ export default new Vuex.Store({
     places: [],
     filteredPlaces: [],
     showModal: false,
-    clickedCoordinates: {}
+    editableModal: true,
+    clickedCoordinates: {},
+    placeName: ""
   },
   getters: {
     modalState: state => state.showModal,
-    places: state => state.places
+    places: state => state.places,
+    placeName: state => state.placeName,
+    modalMode: state => state.editableModal
   },
   mutations: {
     toggleModal(state) {
+      state.editableModal = true;
       state.showModal = !state.showModal;
     },
     addPlace(state, payload) {
@@ -27,6 +32,12 @@ export default new Vuex.Store({
     },
     setCoordinates(state, payload) {
       state.clickedCoordinates = { ...payload };
+    },
+    setPlaceName(state, payload) {
+      state.placeName = payload;
+    },
+    setEditableModalMode(state, payload) {
+      state.editableModal = payload;
     }
   },
   actions: {}
