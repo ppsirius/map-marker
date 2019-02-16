@@ -14,7 +14,8 @@ export default {
       mapConfig: {
         zoom: 11,
         center: { lat: 52.227, lng: 21.016 },
-        styles: snazzyMaps
+        styles: snazzyMaps,
+        disableDefaultUI: true
       },
       apiKey: process.env.VUE_APP_GOOGLE_MAPS_KEY,
       google: null,
