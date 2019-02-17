@@ -5,18 +5,17 @@
       type="text"
       class="search-input"
       placeholder="Find your place"
+      :value="search"
     >
   </div>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "Search",
-  data: () => {
-    return {
-      search: ""
-    };
+  computed: {
+    ...mapGetters(["search"])
   },
   methods: {
     ...mapMutations(["updateFilteredPlaces", "updateSearch"]),

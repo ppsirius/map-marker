@@ -23,7 +23,8 @@ export default new Vuex.Store({
       }
     },
     placeName: state => state.placeName,
-    modalMode: state => state.editableModal
+    modalMode: state => state.editableModal,
+    search: state => state.search
   },
   mutations: {
     toggleModal(state) {
