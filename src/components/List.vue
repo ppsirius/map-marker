@@ -58,7 +58,6 @@ export default {
     .title {
       display: block;
       margin-left: 10px;
-      text-transform: capitalize;
     }
 
     .delete {

@@ -1,12 +1,29 @@
 <template>
   <div class="search shadow rounded-border">
-    <input type="text" class="search-input" placeholder="Find your place">
+    <input
+      @input="updateSearchFilter"
+      type="text"
+      class="search-input"
+      placeholder="Find your place"
+    >
   </div>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
-  name: "Search"
+  name: "Search",
+  data: () => {
+    return {
+      search: ""
+    };
+  },
+  methods: {
+    ...mapMutations(["updateFilteredPlaces"]),
+    updateSearchFilter(e) {
+      this.updateFilteredPlaces(e.target.value);
+    }
+  }
 };
 </script>
 

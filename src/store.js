@@ -41,6 +41,11 @@ export default new Vuex.Store({
     },
     setEditableModalMode(state, payload) {
       state.editableModal = payload;
+    },
+    updateFilteredPlaces(state, payload) {
+      state.filteredPlaces = state.places.filter(place => {
+        return place.title.toLowerCase().includes(payload.toLowerCase());
+      });
     }
   },
   actions: {}
