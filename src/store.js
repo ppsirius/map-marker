@@ -15,7 +15,13 @@ export default new Vuex.Store({
   },
   getters: {
     modalState: state => state.showModal,
-    places: state => state.places,
+    places: state => {
+      if (state.search) {
+        return state.filteredPlaces;
+      } else {
+        return state.places;
+      }
+    },
     placeName: state => state.placeName,
     modalMode: state => state.editableModal
   },
@@ -42,10 +48,16 @@ export default new Vuex.Store({
     setEditableModalMode(state, payload) {
       state.editableModal = payload;
     },
-    updateFilteredPlaces(state, payload) {
+    updateFilteredPlaces(state) {
       state.filteredPlaces = state.places.filter(place => {
-        return place.title.toLowerCase().includes(payload.toLowerCase());
+        return place.title.toLowerCase().includes(state.search.toLowerCase());
       });
+    },
+    updateSearch(state, payload) {
+      state.search = payload;
+    },
+    clearSearch(state) {
+      state.search = "";
     }
   },
   actions: {}

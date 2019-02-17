@@ -44,11 +44,12 @@ export default {
     ...mapGetters(["modalState", "modalMode", "placeName"])
   },
   methods: {
-    ...mapMutations(["toggleModal", "addPlace", "setPlaceName"]),
+    ...mapMutations(["toggleModal", "addPlace", "setPlaceName", "clearSearch"]),
     savePlace() {
       this.addPlace(this.placeName);
       this.toggleModal();
       this.setPlaceName("");
+      this.clearSearch();
     },
     updatePlaceName(e) {
       this.setPlaceName(e.target.value);

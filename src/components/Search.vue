@@ -19,9 +19,10 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["updateFilteredPlaces"]),
+    ...mapMutations(["updateFilteredPlaces", "updateSearch"]),
     updateSearchFilter(e) {
-      this.updateFilteredPlaces(e.target.value);
+      this.updateSearch(e.target.value);
+      this.updateFilteredPlaces();
     }
   }
 };
