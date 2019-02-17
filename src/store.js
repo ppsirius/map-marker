@@ -30,6 +30,9 @@ export default new Vuex.Store({
         title: payload
       });
     },
+    deletePlace(state, payload) {
+      state.places = state.places.filter(place => place.title !== payload);
+    },
     setCoordinates(state, payload) {
       state.clickedCoordinates = { ...payload };
     },

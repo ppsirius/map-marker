@@ -1,9 +1,14 @@
 <template>
-  <ul class="list">
+  <ul class="list shadow">
     <li class="list-element" v-for="place in places" :key="place.title">
       <span class="title">{{place.title}}</span>
-      <div class="delete">
-        <svg class="delete-icon" style="width:24px;height:24px" viewBox="0 0 24 24">
+      <div class="delete" @click.stop="deleteSelectedPlace">
+        <svg
+          class="delete-icon"
+          :aria-label="place.title"
+          style="width:24px;height:24px"
+          viewBox="0 0 24 24"
+        >
           <path
             fill="#000000"
             d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
@@ -15,15 +20,18 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "List",
   computed: {
     ...mapGetters(["places"])
   },
-  mounted() {
-    console.log(this.plcaces);
+  methods: {
+    ...mapMutations(["deletePlace"]),
+    deleteSelectedPlace(e) {
+      this.deletePlace(e.target.parentNode.getAttribute("aria-label"));
+    }
   }
 };
 </script>
@@ -39,7 +47,6 @@ export default {
   list-style: none;
   overflow: hidden;
   border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 
   .list-element {
     display: flex;

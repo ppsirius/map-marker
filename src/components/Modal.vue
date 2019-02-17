@@ -2,7 +2,7 @@
   <transition name="modal">
     <div class="modal-mask" v-if="modalState">
       <div class="modal-wrapper">
-        <div class="modal-container">
+        <div class="modal-container shadow">
           <div class="modal-header">
             <slot name="header">
               <h3>Place in Warsaw</h3>
@@ -73,6 +73,7 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   transition: opacity 0.3s ease;
+  z-index: 1;
 }
 
 .modal-container {
