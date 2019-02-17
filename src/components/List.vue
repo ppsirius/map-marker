@@ -1,5 +1,5 @@
 <template>
-  <ul class="list shadow">
+  <ul class="list shadow rounded-border">
     <li class="list-element" v-for="place in places" :key="place.title">
       <span class="title">{{place.title}}</span>
       <div class="delete" @click.stop="deleteSelectedPlace">
@@ -40,13 +40,11 @@ export default {
 .list {
   position: absolute;
   display: block;
-  top: 0;
-  left: 0;
+  top: 60px;
+  left: 20px;
   padding: 0;
-  margin: 20px 0 0 20px;
   list-style: none;
   overflow: hidden;
-  border-radius: 10px;
 
   .list-element {
     display: flex;

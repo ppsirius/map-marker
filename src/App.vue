@@ -2,7 +2,10 @@
   <div id="app">
     <Map/>
     <Modal/>
-    <List/>
+    <div class="places-controls">
+      <Search/>
+      <List/>
+    </div>
   </div>
 </template>
 
@@ -10,13 +13,15 @@
 import Map from "./components/Map.vue";
 import Modal from "./components/Modal.vue";
 import List from "./components/List";
+import Search from "./components/Search";
 
 export default {
   name: "app",
   components: {
     Map,
     Modal,
-    List
+    List,
+    Search
   }
 };
 </script>
@@ -47,5 +52,9 @@ body {
 
 .shadow {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.rounded-border {
+  border-radius: 10px;
 }
 </style>
