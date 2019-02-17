@@ -4,31 +4,31 @@
       <div class="modal-wrapper">
         <div class="modal-container shadow">
           <div class="modal-header">
-            <slot name="header">
-              <h3>Place in Warsaw</h3>
-            </slot>
+            <header>
+              <h2>Place in Warsaw</h2>
+            </header>
           </div>
           <div class="modal-body">
-            <slot name="body">
-              <form>
-                <input
-                  required
-                  placeholder="Place name"
-                  :value="placeName"
-                  @input="updatePlaceName"
-                >
-              </form>
-            </slot>
-          </div>
-          <div class="modal-footer">
-            <slot name="footer">
-              <div v-if="modalMode">
-                <button class="modal-default-button" @click="savePlace">Save place</button>
+            <form @submit.prevent="checkForm">
+              <div v-if="errors.length">
+                <ul class="error-list">
+                  <li v-for="error in errors" :key="error">{{ error }}</li>
+                </ul>
               </div>
-              <div v-else>
-                <button class="modal-default-button" @click="closeModal">Ok</button>
+              <input
+                placeholder="Place name"
+                :value="placeName"
+                @input="updatePlaceName"
+                class="input-name rounded-border"
+              >
+              <div class="buttons-wrapper" v-if="modalMode">
+                <button class="btn btn-outline" @click="closeModal">Cancel</button>
+                <input type="submit" class="btn btn-primary" value="Save">
               </div>
-            </slot>
+              <div class="buttons-wrapper" v-else>
+                <button class="btn btn-primary" @click="closeModal">Ok</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -40,29 +40,54 @@
 import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "Modal",
+  data: () => {
+    return {
+      errors: []
+    };
+  },
   computed: {
-    ...mapGetters(["modalState", "modalMode", "placeName"])
+    ...mapGetters(["modalState", "modalMode", "placeName", "places"])
   },
   methods: {
     ...mapMutations(["toggleModal", "addPlace", "setPlaceName", "clearSearch"]),
+    checkForm() {
+      if (!this.placeName) {
+        this.clearErrors();
+        this.errors.push("Name required.");
+      } else if (this.isNameUnique()) {
+        this.clearErrors();
+        this.errors.push("Name is already taken");
+      } else {
+        this.savePlace();
+      }
+    },
     savePlace() {
       this.addPlace(this.placeName);
       this.toggleModal();
       this.setPlaceName("");
       this.clearSearch();
+      this.clearErrors();
     },
     updatePlaceName(e) {
       this.setPlaceName(e.target.value);
     },
-    closeModal() {
+    closeModal(e) {
       this.toggleModal();
       this.setPlaceName("");
+      this.clearErrors();
+      e.preventDefault();
+    },
+    clearErrors() {
+      this.errors = [];
+    },
+    isNameUnique() {
+      return this.places.filter(place => place.title === this.placeName).length;
     }
   }
 };
 </script>
 
-<style>
+<style lang="scss">
 .modal-mask {
   position: fixed;
   display: flex;
@@ -78,7 +103,7 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  width: 400px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -87,17 +112,50 @@ export default {
   transition: transform 0.3s ease;
 }
 
-.modal-header h3 {
+.modal-header h2 {
   margin-top: 0;
+  margin-bottom: 10px;
   color: #18b1f6;
 }
 
-.modal-body {
-  margin: 20px 0;
+.input-name {
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  outline: none;
+  font-size: 20px;
+  background-color: transparent;
+  border: 1px solid #c5cbd3;
+  color: #2c3e50;
+
+  &::placeholder {
+    color: #c5cbd3;
+  }
 }
 
-.modal-default-button {
-  float: right;
+.modal-body {
+  margin: 10px 0;
+}
+
+.error-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: rgb(202, 5, 5);
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.buttons-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+
+  .btn {
+    &:first-child {
+      margin-right: 20px;
+    }
+  }
 }
 
 /* Animaition */
@@ -109,8 +167,8 @@ export default {
   opacity: 0;
 }
 
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
+.modal-enter,
+.modal-leave-active {
   transform: scale(1.1);
 }
 </style>

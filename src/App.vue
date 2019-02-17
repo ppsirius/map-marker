@@ -27,6 +27,8 @@ export default {
 </script>
 
 <style lang="scss">
+$shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
 html {
   box-sizing: border-box;
   height: 100%;
@@ -51,10 +53,29 @@ body {
 }
 
 .shadow {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: $shadow;
 }
 
 .rounded-border {
   border-radius: 10px;
+}
+
+.btn {
+  padding: 8px 16px;
+  display: inline-block;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  border-radius: 6px;
+  box-shadow: $shadow;
+  cursor: pointer;
+
+  &:hover {
+  }
+
+  &-primary {
+    background-color: #18b1f6;
+    color: #fff;
+  }
 }
 </style>
