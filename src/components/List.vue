@@ -2,7 +2,7 @@
   <transition name="list">
     <ul v-if="filterPlace.length" class="list shadow rounded-border">
       <li class="list-element" v-for="place in filterPlace" :key="place.title">
-        <span class="title">{{place.title}}</span>
+        <span class="title">{{ place.title }}</span>
         <div
           class="delete"
           @click.stop="deleteSelectedPlace"
@@ -51,7 +51,7 @@ export default {
   padding: 0;
   list-style: none;
   overflow: hidden;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 
   .list-element {
     display: flex;

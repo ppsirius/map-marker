@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <Map/>
-    <Modal/>
+    <Map />
+    <Modal />
     <div class="places-controls">
-      <Search/>
-      <List/>
+      <Search />
+      <List />
     </div>
   </div>
 </template>

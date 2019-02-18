@@ -7,7 +7,7 @@
         class="search-input"
         placeholder="Find your place"
         :value="search"
-      >
+      />
     </div>
   </transition>
 </template>
@@ -39,7 +39,7 @@ export default {
   height: 40px;
   width: 300px;
   background-color: #fff;
-  transition: all .3s ease-in;
+  transition: all 0.3s ease-in;
 
   .search-input {
     width: 100%;

@@ -3,7 +3,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapMutations, mapGetters } from "vuex";
 import GoogleMapsApiLoader from "google-maps-api-loader";
 import { snazzyMaps } from "../utils/snazzyMaps";
@@ -35,7 +34,6 @@ export default {
       "setEditableModalMode"
     ]),
     initializeMap() {
-      const { Map } = this.google.maps;
       this.myMap = new this.google.maps.Map(this.$refs.map, this.mapConfig);
     },
 
@@ -50,7 +48,7 @@ export default {
         title: title
       });
 
-      marker.addListener("click", e => {
+      marker.addListener("click", () => {
         this.moveToMarker(marker);
         this.setPlaceName(marker.title);
         this.toggleModal();
@@ -71,20 +69,22 @@ export default {
   },
   watch: {
     places(newPlaces, oldPlaces) {
-
       if (oldPlaces.length <= newPlaces.length) {
         const lastAddedPlace = newPlaces[newPlaces.length - 1];
         this.addMarker(lastAddedPlace.position, lastAddedPlace.title);
       } else {
         const newTitle = newPlaces.map(place => place.title);
         const oldTitle = oldPlaces.map(place => place.title);
-        const deletedPlace = this._.difference([...newTitle, ...oldTitle], newTitle);
+        const deletedPlace = this._.difference(
+          [...newTitle, ...oldTitle],
+          newTitle
+        );
         this.deleteMarker(...deletedPlace);
       }
     }
   },
   async mounted() {
-    const google = await GoogleMapsApiLoader({
+    await GoogleMapsApiLoader({
       apiKey: this.apiKey
     }).then(google => {
       this.google = google;

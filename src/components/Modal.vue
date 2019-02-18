@@ -21,10 +21,12 @@
                 @input="updatePlaceName"
                 class="input-name rounded-border"
                 :disabled="!modalMode"
-              >
+              />
               <div class="buttons-wrapper" v-if="modalMode">
-                <button class="btn btn-outline" @click="closeModal">Cancel</button>
-                <input type="submit" class="btn btn-primary" value="Save">
+                <button class="btn btn-outline" @click="closeModal">
+                  Cancel
+                </button>
+                <input type="submit" class="btn btn-primary" value="Save" />
               </div>
               <div class="buttons-wrapper" v-else>
                 <button class="btn btn-primary" @click="closeModal">Ok</button>
@@ -50,7 +52,13 @@ export default {
     ...mapGetters(["modalState", "modalMode", "placeName", "places"])
   },
   methods: {
-    ...mapMutations(["toggleModal", "addPlace", "setPlaceName", "clearSearch", "updateFilteredPlaces"]),
+    ...mapMutations([
+      "toggleModal",
+      "addPlace",
+      "setPlaceName",
+      "clearSearch",
+      "updateFilteredPlaces"
+    ]),
     checkForm() {
       if (!this.placeName) {
         this.clearErrors();
