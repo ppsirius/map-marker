@@ -2,10 +2,13 @@
   <ul class="list shadow rounded-border">
     <li class="list-element" v-for="place in places" :key="place.title">
       <span class="title">{{place.title}}</span>
-      <div class="delete" @click.stop="deleteSelectedPlace">
+      <div
+        class="delete"
+        @click.stop="deleteSelectedPlace"
+        :aria-label="place.title"
+      >
         <svg
           class="delete-icon"
-          :aria-label="place.title"
           style="width:24px;height:24px"
           viewBox="0 0 24 24"
         >
@@ -28,9 +31,11 @@ export default {
     ...mapGetters(["places"])
   },
   methods: {
-    ...mapMutations(["deletePlace"]),
+    ...mapMutations(["setDeletePlace", "setDeletedPlaceTitle"]),
     deleteSelectedPlace(e) {
-      this.deletePlace(e.target.parentNode.getAttribute("aria-label"));
+      const title = e.currentTarget.getAttribute("aria-label")
+      this.setDeletePlace(title);
+      this.setDeletedPlaceTitle(title);
     }
   }
 };

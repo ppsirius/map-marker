@@ -63,7 +63,9 @@ export default {
     deleteMarker(title) {
       for (let i = 0; i < this.markers.length; i++) {
         if (this.markers[i].title === title) {
+          // this.markers[i].splice(i, 1)
           this.markers[i].setMap(null);
+          // console.log(this.markers[i].title, 'for');
           return;
         }
       }
@@ -71,12 +73,14 @@ export default {
   },
   watch: {
     places(newPlaces, oldPlaces) {
+      console.log(newPlaces, oldPlaces)
       if (oldPlaces.length <= newPlaces.length) {
         const lastAddedPlace = newPlaces[newPlaces.length - 1];
         this.addMarker(lastAddedPlace.position, lastAddedPlace.title);
       }
     },
     getDeletedPlace(deletedTitle) {
+      console.log(deletedTitle)
       this.deleteMarker(deletedTitle);
     }
   },
@@ -87,10 +91,6 @@ export default {
       this.google = google;
       this.initializeMap();
     });
-
-    setTimeout(() => {
-      this.deleteMarker("aa");
-    }, 15000);
 
     this.google.maps.event.addListener(this.myMap, "click", e => {
       this.setCoordinates({

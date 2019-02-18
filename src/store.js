@@ -40,8 +40,10 @@ export default new Vuex.Store({
         title: payload
       });
     },
-    deletePlace(state, payload) {
+    setDeletePlace(state, payload) {
       state.places = state.places.filter(place => place.title !== payload);
+    },
+    setDeletedPlaceTitle(state, payload) {
       state.deletedPlace = payload;
     },
     setCoordinates(state, payload) {
