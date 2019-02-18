@@ -1,5 +1,5 @@
 <template>
-  <div class="search shadow rounded-border">
+  <div v-if="places.length" class="search shadow rounded-border">
     <input
       @input="updateSearchFilter"
       type="text"
@@ -15,7 +15,7 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "Search",
   computed: {
-    ...mapGetters(["search"])
+    ...mapGetters(["search", "places"])
   },
   methods: {
     ...mapMutations(["updateFilteredPlaces", "updateSearch"]),
@@ -23,6 +23,9 @@ export default {
       this.updateSearch(e.target.value);
       this.updateFilteredPlaces();
     }
+  },
+  created() {
+    console.log(this.places);
   }
 };
 </script>
