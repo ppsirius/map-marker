@@ -33,9 +33,7 @@ export default {
   methods: {
     ...mapMutations(["setDeletePlace", "setDeletedPlaceTitle"]),
     deleteSelectedPlace(e) {
-      const title = e.currentTarget.getAttribute("aria-label")
-      this.setDeletePlace(title);
-      this.setDeletedPlaceTitle(title);
+      this.setDeletePlace(e.currentTarget.getAttribute("aria-label"));
     }
   }
 };

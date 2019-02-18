@@ -24,7 +24,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["places", "getDeletedPlace"])
+    ...mapGetters(["places"])
   },
   methods: {
     ...mapMutations([
@@ -63,9 +63,7 @@ export default {
     deleteMarker(title) {
       for (let i = 0; i < this.markers.length; i++) {
         if (this.markers[i].title === title) {
-          // this.markers[i].splice(i, 1)
           this.markers[i].setMap(null);
-          // console.log(this.markers[i].title, 'for');
           return;
         }
       }
@@ -73,15 +71,16 @@ export default {
   },
   watch: {
     places(newPlaces, oldPlaces) {
-      console.log(newPlaces, oldPlaces)
+
       if (oldPlaces.length <= newPlaces.length) {
         const lastAddedPlace = newPlaces[newPlaces.length - 1];
         this.addMarker(lastAddedPlace.position, lastAddedPlace.title);
+      } else {
+        const newTitle = newPlaces.map(place => place.title);
+        const oldTitle = oldPlaces.map(place => place.title);
+        const deletedPlace = this._.difference([...newTitle, ...oldTitle], newTitle);
+        this.deleteMarker(...deletedPlace);
       }
-    },
-    getDeletedPlace(deletedTitle) {
-      console.log(deletedTitle)
-      this.deleteMarker(deletedTitle);
     }
   },
   async mounted() {

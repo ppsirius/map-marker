@@ -10,6 +10,7 @@
   "dependencies": {
     "google-maps-api-loader": "^1.1.1",
     "vue": "^2.5.22",
+    "vue-lodash": "^2.0.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
