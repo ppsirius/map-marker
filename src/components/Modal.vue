@@ -20,6 +20,7 @@
                 :value="placeName"
                 @input="updatePlaceName"
                 class="input-name rounded-border"
+                :disabled="!modalMode"
               >
               <div class="buttons-wrapper" v-if="modalMode">
                 <button class="btn btn-outline" @click="closeModal">Cancel</button>
@@ -49,7 +50,7 @@ export default {
     ...mapGetters(["modalState", "modalMode", "placeName", "places"])
   },
   methods: {
-    ...mapMutations(["toggleModal", "addPlace", "setPlaceName", "clearSearch"]),
+    ...mapMutations(["toggleModal", "addPlace", "setPlaceName", "clearSearch", "updateFilteredPlaces"]),
     checkForm() {
       if (!this.placeName) {
         this.clearErrors();
@@ -67,6 +68,7 @@ export default {
       this.setPlaceName("");
       this.clearSearch();
       this.clearErrors();
+      this.updateFilteredPlaces();
     },
     updatePlaceName(e) {
       this.setPlaceName(e.target.value);
@@ -113,8 +115,7 @@ export default {
 }
 
 .modal-header h2 {
-  margin-top: 0;
-  margin-bottom: 10px;
+  margin: 10px 0 20px 0;
   color: #18b1f6;
 }
 
@@ -142,7 +143,7 @@ export default {
   margin: 0;
   padding: 0;
   color: rgb(202, 5, 5);
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 

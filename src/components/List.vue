@@ -1,25 +1,27 @@
 <template>
-  <ul class="list shadow rounded-border">
-    <li class="list-element" v-for="place in places" :key="place.title">
-      <span class="title">{{place.title}}</span>
-      <div
-        class="delete"
-        @click.stop="deleteSelectedPlace"
-        :aria-label="place.title"
-      >
-        <svg
-          class="delete-icon"
-          style="width:24px;height:24px"
-          viewBox="0 0 24 24"
+  <transition name="list">
+    <ul v-if="filterPlace.length" class="list shadow rounded-border">
+      <li class="list-element" v-for="place in filterPlace" :key="place.title">
+        <span class="title">{{place.title}}</span>
+        <div
+          class="delete"
+          @click.stop="deleteSelectedPlace"
+          :aria-label="place.title"
         >
-          <path
-            fill="#000000"
-            d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-          ></path>
-        </svg>
-      </div>
-    </li>
-  </ul>
+          <svg
+            class="delete-icon"
+            style="width:24px;height:24px"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="#000000"
+              d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+            ></path>
+          </svg>
+        </div>
+      </li>
+    </ul>
+  </transition>
 </template>
 
 <script>
@@ -28,12 +30,13 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "List",
   computed: {
-    ...mapGetters(["places"])
+    ...mapGetters(["filterPlace"])
   },
   methods: {
-    ...mapMutations(["setDeletePlace", "setDeletedPlaceTitle"]),
+    ...mapMutations(["setDeletePlace", "updateFilteredPlaces"]),
     deleteSelectedPlace(e) {
       this.setDeletePlace(e.currentTarget.getAttribute("aria-label"));
+      this.updateFilteredPlaces();
     }
   }
 };
@@ -48,6 +51,7 @@ export default {
   padding: 0;
   list-style: none;
   overflow: hidden;
+  transition: all .3s ease;
 
   .list-element {
     display: flex;
@@ -76,5 +80,11 @@ export default {
       }
     }
   }
+}
+
+.list-enter,
+.list-leave-active {
+  opacity: 0;
+  transform: translateX(-10px);
 }
 </style>

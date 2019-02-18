@@ -1,13 +1,15 @@
 <template>
-  <div v-if="places.length" class="search shadow rounded-border">
-    <input
-      @input="updateSearchFilter"
-      type="text"
-      class="search-input"
-      placeholder="Find your place"
-      :value="search"
-    >
-  </div>
+  <transition name="search">
+    <div v-if="places.length" class="search shadow rounded-border">
+      <input
+        @input="updateSearchFilter"
+        type="text"
+        class="search-input"
+        placeholder="Find your place"
+        :value="search"
+      >
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -37,6 +39,7 @@ export default {
   height: 40px;
   width: 300px;
   background-color: #fff;
+  transition: all .3s ease-in;
 
   .search-input {
     width: 100%;
@@ -51,5 +54,12 @@ export default {
       color: #c5cbd3;
     }
   }
+}
+
+/* Animaition */
+.search-enter,
+.search-leave-active {
+  opacity: 0;
+  transform: translateX(-10px);
 }
 </style>

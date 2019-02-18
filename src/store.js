@@ -11,21 +11,15 @@ export default new Vuex.Store({
     showModal: false,
     editableModal: true,
     clickedCoordinates: {},
-    createMarker: {},
     placeName: ""
   },
   getters: {
     modalState: state => state.showModal,
-    places: state => {
-      if (state.search) {
-        return state.filteredPlaces;
-      } else {
-        return state.places;
-      }
-    },
+    places: state => state.places,
+    filterPlace: state => state.filteredPlaces,
     placeName: state => state.placeName,
     modalMode: state => state.editableModal,
-    search: state => state.search,
+    search: state => state.search
   },
   mutations: {
     toggleModal(state) {
