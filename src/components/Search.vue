@@ -23,9 +23,6 @@ export default {
       this.updateSearch(e.target.value);
       this.updateFilteredPlaces();
     }
-  },
-  created() {
-    console.log(this.places);
   }
 };
 </script>
