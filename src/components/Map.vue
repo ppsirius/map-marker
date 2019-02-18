@@ -19,11 +19,12 @@ export default {
       },
       apiKey: process.env.VUE_APP_GOOGLE_MAPS_KEY,
       google: null,
-      myMap: null
+      myMap: null,
+      markers: []
     };
   },
   computed: {
-    ...mapGetters(["places"])
+    ...mapGetters(["places", "getDeletedPlace"])
   },
   methods: {
     ...mapMutations([
@@ -42,25 +43,41 @@ export default {
       this.myMap.panTo(marker.getPosition());
     },
 
-    updateMarkers() {
-      this.places.forEach(place => {
-        const marker = new this.google.maps.Marker({
-          position: place.position,
-          map: this.myMap,
-          title: place.title
-        });
-        marker.addListener("click", e => {
-          this.moveToMarker(marker);
-          this.setPlaceName(marker.title);
-          this.toggleModal();
-          this.setEditableModalMode(false);
-        });
+    addMarker(location, title) {
+      const marker = new this.google.maps.Marker({
+        position: location,
+        map: this.myMap,
+        title: title
       });
+
+      marker.addListener("click", e => {
+        this.moveToMarker(marker);
+        this.setPlaceName(marker.title);
+        this.toggleModal();
+        this.setEditableModalMode(false);
+      });
+
+      this.markers.push(marker);
+    },
+
+    deleteMarker(title) {
+      for (let i = 0; i < this.markers.length; i++) {
+        if (this.markers[i].title === title) {
+          this.markers[i].setMap(null);
+          return;
+        }
+      }
     }
   },
   watch: {
-    places() {
-      this.updateMarkers();
+    places(newPlaces, oldPlaces) {
+      if (oldPlaces.length <= newPlaces.length) {
+        const lastAddedPlace = newPlaces[newPlaces.length - 1];
+        this.addMarker(lastAddedPlace.position, lastAddedPlace.title);
+      }
+    },
+    getDeletedPlace(deletedTitle) {
+      this.deleteMarker(deletedTitle);
     }
   },
   async mounted() {
@@ -70,6 +87,10 @@ export default {
       this.google = google;
       this.initializeMap();
     });
+
+    setTimeout(() => {
+      this.deleteMarker("aa");
+    }, 15000);
 
     this.google.maps.event.addListener(this.myMap, "click", e => {
       this.setCoordinates({

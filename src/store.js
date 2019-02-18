@@ -11,6 +11,8 @@ export default new Vuex.Store({
     showModal: false,
     editableModal: true,
     clickedCoordinates: {},
+    deletedPlace: "", // @TODO temporary solution
+    createMarker: {},
     placeName: ""
   },
   getters: {
@@ -24,7 +26,8 @@ export default new Vuex.Store({
     },
     placeName: state => state.placeName,
     modalMode: state => state.editableModal,
-    search: state => state.search
+    search: state => state.search,
+    getDeletedPlace: state => state.deletedPlace
   },
   mutations: {
     toggleModal(state) {
@@ -39,6 +42,7 @@ export default new Vuex.Store({
     },
     deletePlace(state, payload) {
       state.places = state.places.filter(place => place.title !== payload);
+      state.deletedPlace = payload;
     },
     setCoordinates(state, payload) {
       state.clickedCoordinates = { ...payload };
