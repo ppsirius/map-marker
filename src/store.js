@@ -41,6 +41,9 @@ export default new Vuex.Store({
     setPlaceName(state, payload) {
       state.placeName = payload;
     },
+    clearPlaceName(state) {
+      state.placeName = "";
+    },
     setEditableModalMode(state, payload) {
       state.editableModal = payload;
     },

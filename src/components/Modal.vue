@@ -56,6 +56,7 @@ export default {
       "toggleModal",
       "addPlace",
       "setPlaceName",
+      "clearPlaceName",
       "clearSearch",
       "updateFilteredPlaces"
     ]),
@@ -73,7 +74,7 @@ export default {
     savePlace() {
       this.addPlace(this.placeName);
       this.toggleModal();
-      this.setPlaceName("");
+      this.clearPlaceName();
       this.clearSearch();
       this.clearErrors();
       this.updateFilteredPlaces();
@@ -83,7 +84,7 @@ export default {
     },
     closeModal(e) {
       this.toggleModal();
-      this.setPlaceName("");
+      this.clearPlaceName();
       this.clearErrors();
       e.preventDefault();
     },
